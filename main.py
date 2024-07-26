@@ -26,15 +26,17 @@ engine = create_engine(connection_url,
 csv = pd.read_csv(r"C:\Users\asorensen\OneDrive - CVRx Inc\Projects\20240726_Datafactory_salesops_datetime_conversion"
                   r"\attribute list csv.csv")
 
+# obtain all table names
 tables = []
 for table in csv['NEW TABLES'][1:]:
     if table not in tables:
         tables.append(table)
 
+# connect to the database and iterate through each table
 conn = engine.connect()
 for table in tables[:-1]:
     with open(r"C:\Users\asorensen\OneDrive - CVRx Inc\Projects\20240726_Datafactory_salesops_datetime_conversion"
-              r"\conversion_template.sql") as sql:
+              r"\iterate_through_tables\conversion_template.sql") as sql:
         script = sql.read()
     query = script.replace('TABLE_NAME', table)
     try:
